@@ -1,0 +1,9 @@
+# ByteTrack tuned for baggage-belt footage: bags briefly occlude each other,
+# so keep lost tracks alive longer to avoid one bag getting counted as several.
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+track_buffer: 60
+match_thresh: 0.75
+fuse_score: True

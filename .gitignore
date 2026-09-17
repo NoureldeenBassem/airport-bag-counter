@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+*.pt
+scripts/*.mp4
+.claude/scheduled_tasks.lock
