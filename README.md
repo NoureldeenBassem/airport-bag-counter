@@ -38,6 +38,19 @@ they match.
   compare totals. Line orientation can still be forced manually in Settings
   if auto-detect picks wrong for unusual footage.
 
+## Deploying to Streamlit Community Cloud
+
+1. Push this repo to GitHub (already done if you're reading this from there).
+2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub, click
+   **New app**, pick this repo/branch and `app.py` as the entry point, then **Deploy**.
+3. `packages.txt` (installs `ffmpeg`) and `requirements.txt` (CPU-only torch via
+   `--extra-index-url`, `opencv-python-headless`) are already set up for the
+   cloud environment — no extra config needed.
+
+The free tier has ~1GB RAM. Detection on long/high-resolution videos can be slow
+or run out of memory there — for a smooth demo, use short clips (a few hundred
+frames) and the default `yolov8n.pt` model.
+
 ## Notes
 
 - Works best with a clear single-lane belt shot (one bag-width across the
