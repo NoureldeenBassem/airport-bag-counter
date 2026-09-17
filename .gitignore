@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 *.pt
 scripts/*.mp4
+sample_videos/*.mp4
 .claude/scheduled_tasks.lock

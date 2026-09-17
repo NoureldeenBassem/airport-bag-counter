@@ -11,7 +11,7 @@ st.set_page_config(page_title="Airport Bag Counter", page_icon="🧳", layout="c
 st.title("🧳 Airport Bag In/Out Counter")
 st.write(
     "Upload the entry (incoming) and exit (outgoing) conveyor-belt videos. "
-    "The app counts unique bags crossing the belt in each video and flags a mismatch."
+    "The app counts every distinct bag that appears on the belt in each video and flags a mismatch."
 )
 
 col1, col2 = st.columns(2)
@@ -22,15 +22,15 @@ with col2:
 
 with st.expander("Settings"):
     model_name = st.selectbox("YOLO model", ["yolov8n.pt", "yolov8s.pt", "yolov8m.pt"], index=0)
-    orientation_choice = st.selectbox(
-        "Counting line orientation",
-        ["Auto-detect", "horizontal", "vertical"],
-        index=0,
-        help="Auto-detect picks the line direction from how the bags actually move in each video.",
-    )
-    orientation = None if orientation_choice == "Auto-detect" else orientation_choice
-    line_ratio = st.slider("Counting line position (fraction of frame)", 0.1, 0.9, 0.5, 0.05)
     conf = st.slider("Detection confidence threshold", 0.1, 0.9, 0.35, 0.05)
+    min_track_frames = st.slider(
+        "Minimum frames to confirm a bag",
+        1,
+        30,
+        10,
+        help="A tracked object must be seen for at least this many frames to count as a real bag "
+        "(filters out brief spurious detections like glare or reflections).",
+    )
     show_annotated = st.checkbox("Show annotated output videos", value=True)
 
 
@@ -50,9 +50,8 @@ if st.button("Process videos", type="primary", disabled=not (entry_file and exit
             entry_path,
             output_path=entry_out,
             model_name=model_name,
-            line_ratio=line_ratio,
-            orientation=orientation,
             conf=conf,
+            min_track_frames=min_track_frames,
         )
 
     with st.spinner("Processing exit video..."):
@@ -62,9 +61,8 @@ if st.button("Process videos", type="primary", disabled=not (entry_file and exit
             exit_path,
             output_path=exit_out,
             model_name=model_name,
-            line_ratio=line_ratio,
-            orientation=orientation,
             conf=conf,
+            min_track_frames=min_track_frames,
         )
 
     st.subheader("Results")
